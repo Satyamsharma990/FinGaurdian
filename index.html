@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinGuardian AI - Pitch Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* --- GLOBAL SETUP & THEME --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #02040A; /* Deeper dark for better contrast */
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent scrolling for slide view */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Slide Deck Container */
+        #deck-container {
+            position: relative;
+            width: 1280px;
+            height: 720px;
+            perspective: 1000px;
+        }
+
+        .slide-container {
+            background: rgba(8, 12, 22, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 720px;
+            overflow: hidden;
+            padding: 60px;
+            position: absolute; /* Stack slides on top of each other */
+            top: 0;
+            left: 0;
+            width: 1280px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #E2E8F0;
+            
+            /* Slide transitions */
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 10;
+        }
+
+        .slide-container.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            z-index: 20;
+        }
+
+        /* Organic Floating Orbs for Human/Dynamic feel */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.4;
+            z-index: 0;
+            animation: float 12s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .orb-cyan { background: #00E5FF; top: -10%; left: -5%; width: 500px; height: 500px; }
+        .orb-purple { background: #B250FF; bottom: -10%; right: -5%; width: 600px; height: 600px; animation-delay: -6s; }
+        .orb-accent { background: #3B82F6; top: 40%; left: 40%; width: 300px; height: 300px; animation-delay: -3s; opacity: 0.2; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -50px) scale(1.05); }
+        }
+
+        .slide-container > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #00E5FF 0%, #3B82F6 50%, #B250FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .text-cyan { color: #00E5FF; }
+        .text-purple { color: #B250FF; }
+
+        h1 {
+            font-size: 86px;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .slide-title {
+            font-size: 52px;
+            margin-bottom: 40px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #FFFFFF;
+        }
+
+        p, li {
+            font-size: 20px;
+            line-height: 1.7;
+            color: #94A3B8;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            font-size: 28px;
+            font-weight: 500;
+            color: #F8FAFC;
+            margin-bottom: 20px;
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* --- UI COMPONENTS (ADVANCED GLASSMORPHISM) --- */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 45px rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+        }
+
+        .glass-panel-red {
+            background: linear-gradient(145deg, rgba(255, 50, 50, 0.08) 0%, rgba(255, 50, 50, 0.02) 100%);
+            border: 1px solid rgba(255, 50, 50, 0.2);
+        }
+
+        .icon-box {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(178, 80, 255, 0.15));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- LAYOUTS --- */
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+        }
+
+        /* Human-Centric Image Wrappers */
+        .image-wrapper {
+            border-radius: 32px;
+            overflow: hidden;
+            width: 100%;
+            height: 480px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 10s ease;
+        }
+
+        .slide-container:hover .image-wrapper img {
+            transform: scale(1.05);
+        }
+
+        /* Floating Badge for Human Context */
+        .floating-badge {
+            position: absolute;
+            bottom: 30px;
+            left: -20px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .active .floating-badge {
+            animation: slideInLeft 1s ease forwards 0.8s;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00E5FF;
+        }
+
+        /* Flowchart Horizontal Layout */
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+            position: relative;
+        }
+
+        .flow-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            width: 90%;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(0, 229, 255, 0.2), rgba(178, 80, 255, 0.2));
+            z-index: -1;
+        }
+
+        .flow-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: #0B1120;
+        }
+
+        /* Real-Life Example (Numbers) Layout */
+        .financial-trap-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .trap-box {
+            flex: 1;
+            text-align: center;
+            padding: 50px 20px;
+            border-radius: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trap-amount {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 72px;
+            font-weight: 800;
+            margin: 20px 0;
+            line-height: 1;
+        }
+
+        /* Bleed Image Override - More organic */
+        .bleed-image-layout {
+            padding: 0;
+            grid-template-columns: 1.2fr 0.8fr;
+            display: grid;
+            gap: 0;
+            align-items: start;
+        }
+
+        .bleed-image-layout > .content-container {
+            padding: 60px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bleed-image-layout .image-container {
+            height: 720px;
+            width: 100%;
+            position: relative;
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .bleed-image-layout img.bleed-image-side {
+            width: 100%;
+            height: 720px;
+            object-fit: cover;
+        }
+
+        /* --- PRESENTATION ANIMATIONS --- */
+        .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fade-in { opacity: 0; transition: all 1s ease; }
+        
+        /* Elements only animate in when their parent slide is active */
+        .active .fade-up { opacity: 1; transform: translateY(0); }
+        .active .fade-in { opacity: 1; }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+
+        @keyframes slideInLeft {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Navigation Controls */
+        .presentation-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .presentation-controls button {
+            background: none;
+            border: none;
+            color: #94A3B8;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .presentation-controls button:hover {
+            color: #00E5FF;
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .presentation-controls button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: none;
+        }
+
+        .slide-counter {
+            color: #F8FAFC;
+            font-weight: 600;
+            font-size: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 35px;
+            right: 40px;
+            color: #475569;
+            font-size: 14px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<div id="deck-container">
+    <!-- Slide 1: Title Slide -->
+    <div class="slide-container" id="slide1">
+        <div class="orb orb-cyan"></div>
+        <div class="orb orb-purple"></div>
+        <div class="content-area" style="align-items: center; text-align: center;">
+            <div class="icon-box fade-up" style="width: 120px; height: 120px; font-size: 56px; border-radius: 35px; margin-bottom: 40px;">
+                <i class="fa-solid fa-shield-heart text-cyan"></i>
+            </div>
+            <h1 class="fade-up stagger-1">FinGuardian <span class="text-gradient">AI</span></h1>
+            <h2 class="subtitle fade-up stagger-2" style="font-size: 32px;">Your Personal Financial Protector</h2>
+            <p class="fade-up stagger-3" style="max-width: 700px; margin: 20px auto; font-size: 22px;">Translating complex insurance and loan documents into simple, human terms. Protects you from hidden risks.</p>
+            
+            <div class="glass-panel fade-up stagger-4" style="margin-top: 50px; padding: 15px 40px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px;">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Presenter" class="avatar" style="width: 35px; height: 35px;">
+                <span style="font-size: 18px; color: #E2E8F0;">Presented by: <strong>Satyam Sharma</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Problem -->
+    <div class="slide-container" id="slide2">
+        <div class="orb orb-purple" style="top: -20%; left: -10%;"></div>
+        <h2 class="slide-title fade-up"><i class="fa-solid fa-triangle-exclamation text-purple"></i> The Human Cost of Complexity</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3 class="fade-up stagger-1" style="margin-bottom: 30px; font-size: 32px;">Financial contracts are designed to confuse.</h3>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="glass-panel fade-up stagger-2" style="padding: 25px; display: flex; align-items: center; gap: 20px;">
+                            <i class="fa-solid fa-book-journal-whills text-cyan" style="font-size: 28px;"></i>
+                            <p style="margin: 0; color: #E2E8F0;">Documents are 20–40 pages long</p>
+                        </div>
+                        <div class="glass-panel fade-up stagger-3" style="padding: 25px; display: flex; align-items: center; gap: 20px;">
+                            <i class="fa-solid fa-comments-dollar text-purple" style="font-size: 28px;"></i>
+                            <p style="margin: 0; color: #E2E8F0;">Written in heavy legal & financial jargon</p>
+                        </div>
+                        <div class="glass-panel fade-up stagger-4" style="padding: 25px; display: flex; align-items: center; gap: 20px;">
+                            <i class="fa-solid fa-mask text-cyan" style="font-size: 28px;"></i>
+                            <p style="margin: 0; color: #E2E8F0;">Hidden charges are buried in fine print</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-wrapper fade-in stagger-2">
+                    <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=80" alt="Stressed person looking at bills">
+                    
+                    <div class="floating-badge">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" class="avatar" alt="User profile">
+                        <div>
+                            <div style="font-weight: 700; color: #fff; font-size: 16px;">Sarah, 28</div>
+                            <div style="color: #FF5555; font-size: 14px;">Lost ₹50k to hidden loan fees</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Real-Life Example -->
+    <div class="slide-container" id="slide3">
+        <div class="orb orb-cyan" style="bottom: -20%; right: -10%;"></div>
+        <h2 class="slide-title fade-up"><i class="fa-solid fa-chart-line text-cyan"></i> The Real-Life Financial Trap</h2>
+        <div class="content-area">
+            <h3 class="fade-up stagger-1" style="text-align: center; color: #94A3B8; font-weight: 400;">Example: Taking a Personal Loan of ₹5 lakh</h3>
+            
+            <div class="financial-trap-container">
+                <div class="trap-box glass-panel fade-up stagger-2">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: #00E5FF;"></div>
+                    <i class="fa-solid fa-person-rays text-cyan" style="font-size: 48px; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 22px;">User Expects</h3>
+                    <div class="trap-amount text-cyan">₹5L</div>
+                    <p>Total Payment</p>
+                </div>
+                
+                <i class="fa-solid fa-arrow-right-long text-purple fade-in stagger-3" style="font-size: 40px; opacity: 0.5;"></i>
+                
+                <div class="trap-box glass-panel fade-up stagger-3">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: #B250FF;"></div>
+                    <i class="fa-solid fa-building-columns text-purple" style="font-size: 48px; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 22px;">Bank Charges</h3>
+                    <div class="trap-amount text-purple">₹7.2L</div>
+                    <p>Actual Amount Paid</p>
+                </div>
+                
+                <i class="fa-solid fa-arrow-right-long fade-in stagger-4" style="color: #FF5555; font-size: 40px; opacity: 0.5;"></i>
+                
+                <div class="trap-box glass-panel-red fade-up stagger-4">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: #FF5555;"></div>
+                    <i class="fa-solid fa-heart-crack" style="color: #FF5555; font-size: 48px; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 22px; color: #FF5555;">The Damage</h3>
+                    <div class="trap-amount" style="color: #FF5555;">₹2.2L</div>
+                    <p style="color: #FF9999;">Lost to hidden terms</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Solution -->
+    <div class="slide-container" id="slide4">
+        <div class="orb orb-accent"></div>
+        <h2 class="slide-title fade-up"><i class="fa-solid fa-lightbulb text-purple"></i> The Solution: FinGuardian AI</h2>
+        <div class="content-area">
+            <h3 class="fade-up stagger-1" style="text-align: center; color: #E2E8F0; margin-bottom: 80px; font-size: 32px;">Empowering people with clarity in 4 steps.</h3>
+            
+            <div class="flow-container">
+                <div class="flow-step glass-panel fade-up stagger-1">
+                    <div class="icon-box"><i class="fa-solid fa-file-arrow-up text-cyan"></i></div>
+                    <h3 style="font-size: 22px;">1. Upload</h3>
+                    <p style="font-size: 16px;">Snap a photo or upload PDF</p>
+                </div>
+                
+                <i class="fa-solid fa-chevron-right text-cyan fade-in stagger-2" style="font-size: 30px;"></i>
+                
+                <div class="flow-step glass-panel fade-up stagger-2">
+                    <div class="icon-box"><i class="fa-solid fa-brain text-purple"></i></div>
+                    <h3 style="font-size: 22px;">2. AI Reads</h3>
+                    <p style="font-size: 16px;">Analyzes 40 pages in seconds</p>
+                </div>
+                
+                <i class="fa-solid fa-chevron-right text-purple fade-in stagger-3" style="font-size: 30px;"></i>
+                
+                <div class="flow-step glass-panel fade-up stagger-3">
+                    <div class="icon-box"><i class="fa-solid fa-language text-cyan"></i></div>
+                    <h3 style="font-size: 22px;">3. Simplifies</h3>
+                    <p style="font-size: 16px;">Translates to plain, human terms</p>
+                </div>
+                
+                <i class="fa-solid fa-chevron-right text-cyan fade-in stagger-4" style="font-size: 30px;"></i>
+                
+                <div class="flow-step glass-panel fade-up stagger-4" style="border-color: rgba(178, 80, 255, 0.5); box-shadow: 0 0 30px rgba(178, 80, 255, 0.2);">
+                    <div class="icon-box"><i class="fa-solid fa-shield-cat text-purple"></i></div>
+                    <h3 style="font-size: 22px;">4. Protects</h3>
+                    <p style="font-size: 16px;">Highlights specific hidden risks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Insurance Analysis -->
+    <div class="slide-container bleed-image-layout" id="slide5">
+        <div class="content-container">
+            <h2 class="slide-title fade-up"><i class="fa-solid fa-notes-medical text-cyan"></i> Insurance Clarity</h2>
+            <div class="content-area">
+                <h3 class="fade-up stagger-1" style="margin-bottom: 30px; font-weight: 400;">Because health emergencies shouldn't come with financial surprises.</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="glass-panel fade-up stagger-1" style="padding: 25px;">
+                        <i class="fa-solid fa-spell-check text-cyan" style="font-size: 32px; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 20px; margin-bottom: 5px;">Simple Words</h4>
+                        <p style="font-size: 16px; margin: 0;">No more medical jargon.</p>
+                    </div>
+                    <div class="glass-panel fade-up stagger-2" style="padding: 25px;">
+                        <i class="fa-solid fa-ban text-purple" style="font-size: 32px; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 20px; margin-bottom: 5px;">Exclusions</h4>
+                        <p style="font-size: 16px; margin: 0;">Know what is NOT covered.</p>
+                    </div>
+                    <div class="glass-panel fade-up stagger-3" style="padding: 25px;">
+                        <i class="fa-solid fa-hourglass-half text-cyan" style="font-size: 32px; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 20px; margin-bottom: 5px;">Waiting Periods</h4>
+                        <p style="font-size: 16px; margin: 0;">Clear timelines for claims.</p>
+                    </div>
+                    <div class="glass-panel fade-up stagger-4" style="padding: 25px; background: rgba(0, 229, 255, 0.05); border-color: rgba(0, 229, 255, 0.3);">
+                        <i class="fa-solid fa-heart-circle-check text-purple" style="font-size: 32px; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 20px; margin-bottom: 5px;">Better Choices</h4>
+                        <p style="font-size: 16px; margin: 0;">AI suggests better policies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="image-container fade-in stagger-1">
+            <img class="bleed-image-side" src="https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?w=800&q=80" alt="Doctor and patient smiling">
+        </div>
+    </div>
+
+    <!-- Slide 6: Loan Analysis -->
+    <div class="slide-container" id="slide6">
+        <div class="orb orb-cyan" style="top: 20%; left: 30%;"></div>
+        <h2 class="slide-title fade-up"><i class="fa-solid fa-house-chimney-window text-purple"></i> Smart Loan Analysis</h2>
+        <div class="content-area">
+            
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; gap: 40px;">
+                
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+                    <div class="glass-panel fade-up stagger-1" style="display: flex; align-items: center; gap: 20px; text-align: right; flex-direction: row-reverse;">
+                        <div class="icon-box" style="margin: 0; width: 60px; height: 60px;"><i class="fa-solid fa-calculator text-cyan"></i></div>
+                        <div>
+                            <h4>True Total Cost</h4>
+                            <p style="font-size: 15px; margin: 0;">Reveals exact total repayment</p>
+                        </div>
+                    </div>
+                    <div class="glass-panel fade-up stagger-2" style="display: flex; align-items: center; gap: 20px; text-align: right; flex-direction: row-reverse;">
+                        <div class="icon-box" style="margin: 0; width: 60px; height: 60px;"><i class="fa-solid fa-chart-pie text-purple"></i></div>
+                        <div>
+                            <h4>Interest Breakdown</h4>
+                            <p style="font-size: 15px; margin: 0;">Visualizes principal vs interest</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fade-up stagger-3" style="flex: 0.8; text-align: center; position: relative;">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&q=80" alt="Person holding keys" style="width: 250px; height: 350px; object-fit: cover; border-radius: 30px; border: 2px solid rgba(178, 80, 255, 0.4); box-shadow: 0 0 40px rgba(178, 80, 255, 0.2);">
+                    <div class="glass-panel" style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); width: 120%; padding: 15px; border-radius: 15px; background: rgba(15, 23, 42, 0.9);">
+                        <h3 style="margin: 0; font-size: 18px;" class="text-gradient">No More Debt Traps</h3>
+                    </div>
+                </div>
+
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+                    <div class="glass-panel fade-up stagger-4" style="display: flex; align-items: center; gap: 20px;">
+                        <div class="icon-box" style="margin: 0; width: 60px; height: 60px;"><i class="fa-solid fa-user-secret text-cyan"></i></div>
+                        <div>
+                            <h4>Hidden Charges</h4>
+                            <p style="font-size: 15px; margin: 0;">Detects sneaky closure fees</p>
+                        </div>
+                    </div>
+                    <div class="glass-panel fade-up stagger-4" style="display: flex; align-items: center; gap: 20px; border-color: rgba(255, 85, 85, 0.3);">
+                        <div class="icon-box" style="margin: 0; width: 60px; height: 60px; background: rgba(255, 85, 85, 0.1);"><i class="fa-solid fa-triangle-exclamation" style="color: #FF5555;"></i></div>
+                        <div>
+                            <h4>Risk Warning</h4>
+                            <p style="font-size: 15px; margin: 0;">Alerts on predatory terms</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tech Architecture -->
+    <div class="slide-container" id="slide7">
+        <div class="orb orb-purple" style="top: 0; left: 0;"></div>
+        <h2 class="slide-title fade-up"><i class="fa-solid fa-layer-group text-purple"></i> The Engine Behind the Magic</h2>
+        <div class="content-area">
+            <h3 class="fade-up stagger-1" style="text-align: center; margin-bottom: 50px; font-weight: 400;">Powerful tech built for human simplicity.</h3>
+            
+            <div style="display: flex; gap: 30px; width: 100%; justify-content: center;">
+                <div class="glass-panel fade-up stagger-1" style="flex: 1; text-align: center; padding: 40px 20px;">
+                    <i class="fa-brands fa-react" style="font-size: 60px; color: #61DAFB; margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 22px;">Frontend</h3>
+                    <p style="color: #94A3B8; font-size: 16px;">React UI</p>
+                </div>
+                
+                <i class="fa-solid fa-plus fade-in stagger-2" style="align-self: center; font-size: 24px; color: #475569;"></i>
+                
+                <div class="glass-panel fade-up stagger-2" style="flex: 1; text-align: center; padding: 40px 20px;">
+                    <i class="fa-brands fa-node-js" style="font-size: 60px; color: #68A063; margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 22px;">Backend</h3>
+                    <p style="color: #94A3B8; font-size: 16px;">Node.js</p>
+                </div>
+                
+                <i class="fa-solid fa-plus fade-in stagger-3" style="align-self: center; font-size: 24px; color: #475569;"></i>
+                
+                <div class="glass-panel fade-up stagger-3" style="flex: 1.5; text-align: center; padding: 40px 20px; background: rgba(178, 80, 255, 0.1); border-color: rgba(178, 80, 255, 0.4); transform: scale(1.05);">
+                    <i class="fa-brands fa-python" style="font-size: 60px; color: #3776AB; margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 24px;" class="text-gradient">AI Core</h3>
+                    <p style="color: #E2E8F0; font-size: 16px; font-weight: 500;">Python + Gemini AI</p>
+                </div>
+                
+                <i class="fa-solid fa-plus fade-in stagger-4" style="align-self: center; font-size: 24px; color: #475569;"></i>
+                
+                <div class="glass-panel fade-up stagger-4" style="flex: 1; text-align: center; padding: 40px 20px;">
+                    <i class="fa-solid fa-database" style="font-size: 60px; color: #47A248; margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 22px;">Database</h3>
+                    <p style="color: #94A3B8; font-size: 16px;">MongoDB</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Impact -->
+    <div class="slide-container bleed-image-layout" id="slide8">
+        <div class="image-container fade-in stagger-1" style="order: 1; clip-path: polygon(0 0, 85% 0, 100% 100%, 0 100%);">
+            <img class="bleed-image-side" src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&q=80" alt="Happy person using tech">
+            
+            <div class="floating-badge" style="bottom: 50px; left: auto; right: 30px;">
+                <i class="fa-solid fa-face-laugh-beam" style="font-size: 30px; color: #00E5FF;"></i>
+                <div>
+                    <div style="font-weight: 700; color: #fff; font-size: 16px;">John's Family</div>
+                    <div style="color: #00E5FF; font-size: 14px;">Saved ₹2.2L on home loan</div>
+                </div>
+            </div>
+        </div>
+        <div class="content-container" style="order: 2;">
+            <h2 class="slide-title fade-up"><i class="fa-solid fa-bolt text-purple"></i> Real Human Impact</h2>
+            <div class="content-area">
+                <h3 class="fade-up stagger-1" style="margin-bottom: 30px; font-weight: 400;">We measure success in peace of mind.</h3>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="glass-panel fade-up stagger-1" style="padding: 20px 30px; display: flex; align-items: center; gap: 20px;">
+                        <i class="fa-solid fa-piggy-bank text-cyan" style="font-size: 30px; width: 40px;"></i>
+                        <h4 style="font-size: 22px; margin: 0;">Saves Real Money</h4>
+                    </div>
+                    <div class="glass-panel fade-up stagger-2" style="padding: 20px 30px; display: flex; align-items: center; gap: 20px;">
+                        <i class="fa-solid fa-user-shield text-purple" style="font-size: 30px; width: 40px;"></i>
+                        <h4 style="font-size: 22px; margin: 0;">Prevents Financial Fraud</h4>
+                    </div>
+                    <div class="glass-panel fade-up stagger-3" style="padding: 20px 30px; display: flex; align-items: center; gap: 20px;">
+                        <i class="fa-solid fa-book-open-reader text-cyan" style="font-size: 30px; width: 40px;"></i>
+                        <h4 style="font-size: 22px; margin: 0;">Improves Financial Literacy</h4>
+                    </div>
+                </div>
+                
+                <div class="glass-panel fade-up stagger-4" style="margin-top: 30px; background: rgba(178, 80, 255, 0.1); border-color: rgba(178, 80, 255, 0.3); text-align: center;">
+                    <p style="margin: 0; font-size: 22px; font-weight: 600; color: #E2E8F0;">
+                        Protecting <span class="text-purple">millions</span> of everyday people.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Future Scope -->
+    <div class="slide-container" id="slide9">
+        <div class="orb orb-accent" style="top: auto; bottom: -10%;"></div>
+        <h2 class="slide-title fade-up"><i class="fa-solid fa-rocket text-cyan"></i> The Future of FinGuardian</h2>
+        <div class="content-area">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px;">
+                <div class="glass-panel fade-up stagger-1" style="display: flex; align-items: flex-start; gap: 25px;">
+                    <div class="icon-box" style="margin: 0; flex-shrink: 0;"><i class="fa-solid fa-mobile-screen-button text-cyan"></i></div>
+                    <div>
+                        <h3 style="margin-bottom: 8px;">Mobile Application</h3>
+                        <p style="font-size: 16px;">Snap a picture of a contract anywhere, anytime for instant AI analysis.</p>
+                    </div>
+                </div>
+                
+                <div class="glass-panel fade-up stagger-2" style="display: flex; align-items: flex-start; gap: 25px;">
+                    <div class="icon-box" style="margin: 0; flex-shrink: 0;"><i class="fa-solid fa-microphone-lines text-purple"></i></div>
+                    <div>
+                        <h3 style="margin-bottom: 8px;">Voice Explanation</h3>
+                        <p style="font-size: 16px;">Multi-lingual audio summaries for older adults and accessibility.</p>
+                    </div>
+                </div>
+                
+                <div class="glass-panel fade-up stagger-3" style="display: flex; align-items: flex-start; gap: 25px;">
+                    <div class="icon-box" style="margin: 0; flex-shrink: 0;"><i class="fa-solid fa-building-columns text-purple"></i></div>
+                    <div>
+                        <h3 style="margin-bottom: 8px;">Direct Bank Integration</h3>
+                        <p style="font-size: 16px;">Connect via secure APIs to scan live loan offers before you click "Accept".</p>
+                    </div>
+                </div>
+                
+                <div class="glass-panel fade-up stagger-4" style="display: flex; align-items: flex-start; gap: 25px;">
+                    <div class="icon-box" style="margin: 0; flex-shrink: 0;"><i class="fa-solid fa-robot text-cyan"></i></div>
+                    <div>
+                        <h3 style="margin-bottom: 8px;">AI Financial Advisor</h3>
+                        <p style="font-size: 16px;">Chat with your contract. Ask "Can I close this loan early without penalty?"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Conclusion & Q&A -->
+    <div class="slide-container" id="slide10" style="justify-content: center; align-items: center; text-align: center;">
+        <div class="orb orb-cyan"></div>
+        <div class="orb orb-purple"></div>
+        
+        <div class="icon-box fade-up" style="width: 140px; height: 140px; font-size: 70px; border-radius: 40px; margin-bottom: 30px; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(10px);">
+            <i class="fa-solid fa-shield-halved text-gradient"></i>
+        </div>
+        
+        <h1 class="fade-up stagger-1" style="font-size: 72px;">FinGuardian <span class="text-gradient">AI</span></h1>
+        <h2 class="subtitle fade-up stagger-2" style="font-size: 36px; margin-bottom: 50px;">Your personal financial guardian.</h2>
+        
+        <div class="fade-up stagger-3" style="display: flex; gap: 40px; justify-content: center; margin-bottom: 60px;">
+            <div class="glass-panel" style="padding: 15px 30px; display: flex; align-items: center; gap: 15px; border-radius: 50px;">
+                <i class="fa-solid fa-check text-cyan" style="font-size: 24px;"></i>
+                <span style="font-size: 20px; font-weight: 500;">Easy to Use</span>
+            </div>
+            <div class="glass-panel" style="padding: 15px 30px; display: flex; align-items: center; gap: 15px; border-radius: 50px;">
+                <i class="fa-solid fa-bolt text-purple" style="font-size: 24px;"></i>
+                <span style="font-size: 20px; font-weight: 500;">Instant Clarity</span>
+            </div>
+            <div class="glass-panel" style="padding: 15px 30px; display: flex; align-items: center; gap: 15px; border-radius: 50px;">
+                <i class="fa-solid fa-shield text-cyan" style="font-size: 24px;"></i>
+                <span style="font-size: 20px; font-weight: 500;">Total Protection</span>
+            </div>
+        </div>
+        
+        <div class="glass-panel fade-up stagger-4" style="padding: 20px 60px; border-color: rgba(0, 229, 255, 0.4); cursor: pointer;">
+            <h2 class="text-gradient" style="margin: 0; font-size: 48px;">Thank You!</h2>
+            <p style="font-size: 24px; color: #94A3B8; margin-top: 10px;">Open for Questions</p>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation Controls -->
+<div class="presentation-controls">
+    <button id="prevBtn" title="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="slide-counter" id="slideCounter">1 / 10</div>
+    <button id="nextBtn" title="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+<div class="hint">Use <strong>Arrow Keys</strong> or <strong>Spacebar</strong> to navigate</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const slides = document.querySelectorAll('.slide-container');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const counter = document.getElementById('slideCounter');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            // Prevent out of bounds
+            if (index < 0) index = 0;
+            if (index >= slides.length) index = slides.length - 1;
+
+            // Update active classes
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            slides[index].classList.add('active');
+            
+            // Update state
+            currentSlide = index;
+            counter.innerText = `${currentSlide + 1} / ${slides.length}`;
+            
+            // Update button states
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        // Button Listeners
+        prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+
+        // Keyboard Listeners
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                showSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft') {
+                showSlide(currentSlide - 1);
+            }
+        });
+
+        // Initialize First Slide
+        showSlide(0);
+    });
+</script>
+
+</body>
+</html>
